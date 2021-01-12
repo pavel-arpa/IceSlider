@@ -1,0 +1,2 @@
+# IceSlider
+ Costomizable plugin - slider
