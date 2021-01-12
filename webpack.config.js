@@ -1,6 +1,6 @@
 const path = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
-console.log(path)
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 
 // ==========================================================================================
@@ -25,6 +25,10 @@ module.exports = {
   // PLUGINS ===========================================
   plugins: [
     new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: 'src/index.pug',
+      filename: 'index.html'
+    })
   ],
 
 
@@ -48,6 +52,10 @@ module.exports = {
             ]
           }
         }
+      },
+      {
+        test: /\.pug$/,
+        loader: 'pug-loader'
       }
     ],
   },

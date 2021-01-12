@@ -3,5 +3,6 @@ class HelloMessage {
 }
 
 const msg = new HelloMessage("Hi, John!")
+
 console.log(msg)
 
