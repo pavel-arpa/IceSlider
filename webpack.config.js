@@ -21,6 +21,8 @@ module.exports = {
     // contentBase: path.join(__dirname, 'dist'),
   },
 
+  devtool: 'eval',
+
 
   // PLUGINS ===========================================
   plugins: [
