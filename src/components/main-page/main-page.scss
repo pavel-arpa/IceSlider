@@ -1,5 +1,12 @@
-.slider-wrapper {
+.main-page {
   display: flex;
   justify-content: center;
-  margin-top: 100px;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+}
+
+.slider-wrapper {
+  display: flex;
+  width: 266px;
 }

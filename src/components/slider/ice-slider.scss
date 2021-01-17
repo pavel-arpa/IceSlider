@@ -1,0 +1,43 @@
+@import "../../styles/fonts.scss";
+
+#ice-slider {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+#ice-slider .ice-slider {
+  &__text-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  &__title {
+    @extend %font-h3;
+  }
+  &__value {
+    @extend %font-body;
+    line-height: 1.4rem;
+  }
+
+  &__slider {
+    display: flex;
+    margin-top: 20px;
+  }
+  &__point {
+    position: absolute;
+    height: 16px;
+    width: 16px;
+    border-radius: 100%;
+    background: linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
+    border: 2px solid #FFFFFF;
+  }
+  &__line-bg {
+    height: 6px;
+    width: 100%;
+    background: #FFFFFF;
+    border: 1.5px solid rgba(31, 32, 65, 0.25);
+    box-sizing: border-box;
+    border-radius: 3px;
+  }
+}
