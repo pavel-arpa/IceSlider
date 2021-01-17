@@ -13,7 +13,7 @@ function importAll(resolve: any): any {
 importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
 // =============================================================
 
-const view = new View('item');
+const view = new View('ice-slider');
 
 (<any>window).s = view;
 

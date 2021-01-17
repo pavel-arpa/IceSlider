@@ -14,14 +14,17 @@
   }
   &__title {
     @extend %font-h3;
+    color: #1F2041;
   }
   &__value {
     @extend %font-body;
     line-height: 1.4rem;
+    color: rgba(31, 32, 65, 0.5);
   }
 
   &__slider {
     display: flex;
+    align-items: center;
     margin-top: 20px;
   }
   &__point {
