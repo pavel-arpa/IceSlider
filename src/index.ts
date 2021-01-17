@@ -1,4 +1,8 @@
-const View = require('./components/slider/slider-view.ts')
+const View = require('./components/slider/ice-slider_view.ts')
+
+import './styles/null.scss'
+import './styles/montserrat.scss'
+import './styles/fonts.scss'
 
 
 // IMPORTS
@@ -7,7 +11,6 @@ function importAll(resolve: any): any {
 }
 
 importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
-importAll(require.context('../src/styles', true, /\.ts$|\.scss$/));
 // =============================================================
 
 const view = new View('item');
