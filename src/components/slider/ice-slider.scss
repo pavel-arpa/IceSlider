@@ -29,11 +29,10 @@
   }
   &__point {
     position: absolute;
-    height: 16px;
-    width: 16px;
     border-radius: 100%;
     background: linear-gradient(180deg, #6FCF97 0%, #66D2EA 100%);
     border: 2px solid #FFFFFF;
+    cursor: pointer;
   }
   &__line-bg {
     height: 6px;
