@@ -1,4 +1,4 @@
-const View = require('./components/slider/ice-slider_view.ts')
+const { ViewPoint, ViewRange } = require('./components/slider/ice-slider_view')
 
 import './styles/null.scss'
 import './styles/montserrat.scss'
@@ -13,7 +13,14 @@ function importAll(resolve: any): any {
 importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
 // =============================================================
 
-const view = new View('ice-slider');
+const viewPoint = new ViewPoint('ice-slider', {
+  pointSize: 16
+});
+const viewRange = new ViewRange('ice-slider');
 
-(<any>window).s = view;
+
+(<any>window).viewPoint = viewPoint;
+(<any>window).viewRange = viewRange;
+// (<any>window).viewPoint = viewPoint;
+
 
