@@ -14,39 +14,47 @@ interface OptionsPoint {
   pointSize: number;
 }
 
-export class ViewPoint {
-  options: OptionsPoint;
+export class ViewMain {
   $el: HTMLElement;
   $points: NodeListOf<HTMLElement>;
-  $lineBg: HTMLElement;
+  $line: HTMLElement;
+
+  constructor(id: string) {
+    // PROPERTIES
+    this.$el = document.getElementById(id)
+    this.$el.querySelector('.ice-slider__slider') != undefined ? 0 : this.render()
+    this.$points = this.$el.querySelectorAll('.ice-slider__point')
+    this.$line = this.$el.querySelector('.ice-slider__line-bg')
+    
+  }
+  protected render() {
+    this.$el.innerHTML = getTemplate()
+  }
+}
+
+
+
+
+
+// ===================================================================================
+export class ViewPoint extends ViewMain {
+  options: OptionsPoint;
 
   constructor(id: string, options: OptionsPoint) {
-    // PROPERTIES
-    this.options = options;
-    this.$el = document.getElementById(id)
-    this.render()
-    this.$points = this.$el.querySelectorAll('.ice-slider__point')
-    this.$lineBg = this.$el.querySelector('.ice-slider__line-bg')
+    super(id)
+    this.options = options
     
     // CALL METHODS
     if(this.$el !== null) {
       this.$points[0].ondragstart = () => false // turn off browser d'n'd
       this.setup()
       this.toDragHorizon()
-      console.log(document);
-
-      // LISTENERS
-      this.resetPointSize()
     }
-  }
-
-  private render() {
-    this.$el.innerHTML = getTemplate()
   }
 
   private setup() {
     this.$points[0].style.width = this.$points[0].style.height = this.options.pointSize + 'px'
-    this.$points[0].style.left = this.$points[0].offsetLeft - this.options.pointSize / 2 + 'px'
+    this.$points[0].style.marginLeft = - this.options.pointSize / 2 + 'px'
   }
 
   toDragHorizon() {
@@ -65,18 +73,18 @@ export class ViewPoint {
 
   moveAtCenter(event) {  
     let centerOfElemUnderCursor: number = event.pageX - this.$points[0].offsetWidth / 2
-    let offsetLeftSliderFIRST: number = this.$lineBg.offsetLeft - this.$points[0].offsetWidth / 2
-    let offsetLeftSliderSECOND: number = this.$lineBg.offsetLeft - this.$points[0].offsetWidth / 2 + this.$lineBg.offsetWidth
+    let offsetLeftSliderFIRST: number = this.$line.offsetLeft - this.$points[0].offsetWidth / 2
+    let offsetLeftSliderSECOND: number = this.$line.offsetLeft - this.$points[0].offsetWidth / 2 + this.$line.offsetWidth
 
     let isOutsideLeft: boolean = centerOfElemUnderCursor < offsetLeftSliderFIRST
     let isOutsideRight: boolean = centerOfElemUnderCursor > offsetLeftSliderSECOND
 
     if (!isOutsideLeft && !isOutsideRight) {
-      this.$points[0].style.left = centerOfElemUnderCursor + 'px';
+      this.$points[0].style.marginLeft = event.pageX - this.$line.offsetLeft - this.$points[0].offsetWidth / 2 + 'px';
     } else if (isOutsideLeft) {
-      this.$points[0].style.left = offsetLeftSliderFIRST + 'px';
+      this.$points[0].style.marginLeft = - this.$points[0].offsetWidth / 2 + 'px';
     } else {
-      this.$points[0].style.left = offsetLeftSliderSECOND + 'px';
+      this.$points[0].style.marginLeft = this.$line.offsetWidth - this.$points[0].offsetWidth / 2 + 'px';
     }
     
   }
@@ -84,44 +92,60 @@ export class ViewPoint {
   removeMoveItem(event) {
     document.removeEventListener('mousemove', this.moveAtCenter)
   }
-
-  resizeWindowHadler(event) {
-    let pointOffsetLeft: number = this.$points[0].offsetLeft - this.$points[0].offsetWidth / 2
-    let lineBgOffsetLeft: number = this.$lineBg.offsetLeft
-    let difference: number = pointOffsetLeft - lineBgOffsetLeft
-
-    let lineBgWidth: number = this.$lineBg.offsetWidth
-    // let relativePosition: number = 
+}
 
 
 
-    // console.log(difference)
+
+
+// ===================================================================================
+export class ViewLine extends ViewMain {
+  constructor(id: string) {
+    super(id)
+    
+    // CALL METHODS
+    if(this.$el !== null) {
+      this.resizeLine()
+    }
+  }
+  
+  resizeLine() {
+    this.resizeLineHandler = this.resizeLineHandler.bind(this)
+    window.addEventListener('resize', this.resizeLineHandler)
+  }
+
+  resizeLineHandler() {
+    // let lineWidth = this.$line.offsetWidth
+    // let marginPoint = this.$points[0].style.marginLeft
+    // console.log(marginPoint);
     
   }
-
-  resetPointSize() {
-    this.resizeWindowHadler = this.resizeWindowHadler.bind(this)
-    window.addEventListener('resize', this.resizeWindowHadler)
-  }
-
 }
 
 
 
-// =====================================================================
-export class ViewRange {
-  $el: HTMLElement;
 
+
+// =================================================================================
+class ViewRange {
   constructor(id: string) {
-    this.$el = document.getElementById(id)
-
   }
 }
 
 
 
 
+// =================================================================================
+class View {
+  point: object;
+  line: object;
+  range: object;
+
+  constructor(id: string, options: OptionsPoint) {
+    this.point = new ViewPoint(id, options)
+    this.line = new ViewLine(id)
+  }
+}
 
 
-
-module.exports = { ViewPoint, ViewRange }
+module.exports = { View, ViewPoint, ViewRange, ViewLine }

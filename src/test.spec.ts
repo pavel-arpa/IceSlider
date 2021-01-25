@@ -1,10 +1,6 @@
-// const jsdom = require("jsdom");
-// const { JSDOM } = jsdom;
 const { ViewPoint, ViewRange} = require('./components/slider/ice-slider_view.ts')
-// const dom = new JSDOM('<html><body id="root"><div id="ice-slider"></div></body></html>')
 
-// global.window = dom.window
-// global.document = dom.window.document
+
 
 describe('VIEW point: ====================', () => {
   document.body.innerHTML = '<div id="ice-slider"></div>'
