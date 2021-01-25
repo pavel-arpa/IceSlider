@@ -52,6 +52,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "jsdom": "^16.4.0",
     "resolve-url-loader": "^3.1.2"
   }
 }
