@@ -28,5 +28,6 @@ importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
 
 $('#ice-slider').iceSlider({
   id: 'ice-slider',
-  pointSize: 16
+  pointSize: 16,
+  lineHeight: 6
 })
