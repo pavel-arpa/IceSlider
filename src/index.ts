@@ -1,4 +1,7 @@
+const { Model } = require('./components/slider/ice-slider_model')
 const { View } = require('./components/slider/ice-slider_view')
+const { Presenter } = require('./components/slider/ice-slider_presenter')
+
 
 import './styles/null.scss'
 import './styles/montserrat.scss'
@@ -12,29 +15,18 @@ function importAll(resolve: any): any {
 importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
 
 
+(function($) {
+  $.fn.extend({
+    iceSlider: function(options: Options) {
+      const model = new Model()
+      const view = new View()
+      const presenter = new Presenter(view, model, options)
+      console.log('--> The plugin was installed successfully');
+      
+  }})
+}(jQuery))
 
-// =============================================================
-const view = new View('ice-slider', {
+$('#ice-slider').iceSlider({
+  id: 'ice-slider',
   pointSize: 16
-});
-
-(<any>window).view = view;
-
-
-
-// const viewPoint = new ViewPoint('ice-slider', {
-//   pointSize: 16
-// });
-// const viewLine = new ViewLine('ice-slider');
-// const viewRange = new ViewRange('ice-slider');
-
-
-// (<any>window).viewLine = viewLine;
-// (<any>window).viewRange = viewRange;
-
-
-
-
-
-
-
+})
