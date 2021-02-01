@@ -48,9 +48,12 @@ class SVPoint {
   
   removeMoveItem(event) {
     document.removeEventListener('mousemove', this.moveAtCenter)
+    this.toTurnOnUserSelect()
   }
 
-  moveAtCenter(event) {  
+  moveAtCenter(event) {
+    this.toTurnOffUserSelect()
+
     let centerOfEl: number = event.pageX - this.view.options.pointSize / 2
     let offsetLeftFIRST: number = this.view.$line.offsetLeft - this.view.options.pointSize / 2
     let offsetLeftSECOND: number = this.view.$line.offsetLeft - this.view.options.pointSize / 2 + this.view.$line.offsetWidth
@@ -69,6 +72,56 @@ class SVPoint {
     
     this.currentX = Number(this.view.$points[0].style.marginLeft.slice(0, -2)) + this.view.options.pointSize / 2
     this.currentLineWidth = this.view.$line.offsetWidth
+  }
+
+  toTurnOffUserSelect() {
+    document.body.style.userSelect = 'none'
+  }
+
+  toTurnOnUserSelect() {
+    document.body.style.userSelect = 'auto'
+  }
+}
+
+
+
+class SVFloatingValue {
+  view: View;
+
+  constructor(view) {
+    this.view = view
+  }
+  
+  start() {
+    this.toFloat()
+  }
+
+  toFloat () {
+    this.removeCurrentValueHandler = this.removeCurrentValueHandler.bind(this)
+    this.currentValue = this.currentValue.bind(this)
+    
+    this.view.$points[0].addEventListener('mousedown', this.currentValue)
+    document.addEventListener('mouseup', this.removeCurrentValueHandler)
+  }
+
+  currentValue() {
+    this.currentValueHandler = this.currentValueHandler.bind(this)
+    document.addEventListener('mousemove', this.currentValueHandler)
+  }
+
+  currentValueHandler() {
+    this.view.$floatingValue.style.opacity = '1'
+    this.view.$floatingValue.style.left = 'auto'
+    this.view.$floatingValue.style.marginLeft = this.view.SVPoint.currentX - this.view.$floatingValue.offsetWidth / 2 + 'px'
+    this.view.$floatingValue.firstElementChild.textContent = String(this.view.SVPoint.currentX)
+  }
+
+  removeCurrentValueHandler() {
+    this.view.$floatingValue.style.opacity = '0'
+    setTimeout(() => {
+      this.view.$floatingValue.style.left = '-2000px'
+    }, 300)
+    document.removeEventListener('mousemove', this.currentValueHandler)
   }
 }
 
@@ -151,8 +204,10 @@ class View {
   $points: NodeListOf<HTMLElement>;
   $range: HTMLElement;
   $line: HTMLElement;
+  $floatingValue: HTMLElement;
 
   SVPoint: SVPoint;
+  SVFloatingValue: SVFloatingValue;
   SVRange: SVRange;
   SVLine: SVLine;
   // =============
@@ -170,18 +225,20 @@ class View {
   initProps() {
     this.$el = document.getElementById(this.options.id)
     this.$points = this.$el.querySelectorAll('.ice-slider__point')
-    
     this.$range = this.$el.querySelector('.ice-slider__range')
     this.$line = this.$el.querySelector('.ice-slider__line')
+    this.$floatingValue = this.$el.querySelector('.ice-slider__floating-value')
     console.log('Properties init:   succes')
   }
 
   initComponents() {
     this.SVPoint = new SVPoint(this)
+    this.SVFloatingValue = new SVFloatingValue(this)
     this.SVRange = new SVRange(this)
     this.SVLine = new SVLine(this)
 
     this.SVPoint.start()
+    this.SVFloatingValue.start()
     this.SVRange.start()
     this.SVLine.start()
 

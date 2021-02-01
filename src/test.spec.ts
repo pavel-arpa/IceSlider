@@ -7,10 +7,10 @@ describe('VIEW point: ====================', () => {
 
   const _model = new Model()
   const _view = new View()
-  const _presenter = new Presenter(_view, _model, {
-    id: 'ice-slider',
-    pointSize: 16
-  })
+  // const _presenter = new Presenter(_view, _model, {
+  //   id: 'ice-slider',
+  //   pointSize: 16
+  // })
   
   describe('Main HTMLElement "$el"', () => {
     test('should be defined', () => {
