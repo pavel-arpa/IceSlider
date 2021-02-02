@@ -1,14 +1,3 @@
-// =========== TYPES ===========
-interface Options extends Object {
-  id: string;
-  pointSize: number;
-  lineHeight: number;
-}
-
-
-
-
-
 // ========== SUBVIEWS ==========
 class SVPoint {
   view: View;
@@ -214,12 +203,10 @@ class View {
 
   setOptions(options: Options) {
     this.options = options
-    console.log('Options setup:   succes')
   }
   
   render(template) {
     document.getElementById(this.options.id).innerHTML = template
-    console.log('Template uploading:   succes')
   }
 
   initProps() {
@@ -228,7 +215,6 @@ class View {
     this.$range = this.$el.querySelector('.ice-slider__range')
     this.$line = this.$el.querySelector('.ice-slider__line')
     this.$floatingValue = this.$el.querySelector('.ice-slider__floating-value')
-    console.log('Properties init:   succes')
   }
 
   initComponents() {
@@ -241,8 +227,6 @@ class View {
     this.SVFloatingValue.start()
     this.SVRange.start()
     this.SVLine.start()
-
-    console.log('Components init:   succes')
   }
 }
 
@@ -251,4 +235,4 @@ class View {
 
 
 // ========== EXPORT ==========
-module.exports = { View }
+export default View

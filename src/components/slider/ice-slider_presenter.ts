@@ -1,12 +1,5 @@
-// =========== TYPES ===========
-interface Options extends Object {
-  id: string;
-  pointSize: number;
-  lineHeight: number;
-}
-
-
-
+import Model from "./ice-slider_model";
+import View from "./ice-slider_view";
 
 // =========== PRESENTER ===========
 class Presenter {
@@ -30,4 +23,4 @@ class Presenter {
 
 
 // =========== EXPORT ===========
-module.exports = { Presenter }
+export default Presenter

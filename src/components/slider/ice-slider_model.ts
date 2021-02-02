@@ -29,4 +29,4 @@ class Model {
 
 
 // =========== EXPORT ===========
-module.exports = { Model }
+export default Model
