@@ -1,20 +1,20 @@
-const { Model } = require('./components/slider/ice-slider_model')
-const { View } = require('./components/slider/ice-slider_view')
-const { Presenter } = require('./components/slider/ice-slider_presenter')
-
+// IMPORTS
+import Model from './components/slider/ice-slider_model'
+import View from './components/slider/ice-slider_view'
+import Presenter from './components/slider/ice-slider_presenter'
 
 import './styles/null.scss'
 import './styles/montserrat.scss'
 import './styles/fonts.scss'
 
-
-// IMPORTS
 function importAll(resolve: any): any {
   resolve.keys().forEach(resolve);
 }
 importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
 
 
+
+// ASSIGMENTS
 (function($) {
   $.fn.extend({
     iceSlider: function(options: Options) {
@@ -26,6 +26,9 @@ importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
   }})
 }(jQuery))
 
+
+
+// INIT
 $('#ice-slider').iceSlider({
   id: 'ice-slider',
   pointSize: 16,
