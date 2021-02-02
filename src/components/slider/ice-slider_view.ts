@@ -3,11 +3,15 @@ class SVPoint {
   view: View;
   currentX: number;
   currentLineWidth: number;
+  stepValue: number;
+  newPosition: number;
 
   constructor(view) {
     this.view = view
     this.currentX = 0
     this.currentLineWidth = this.view.$line.offsetWidth
+    this.stepValue = 0
+    this.newPosition = 0
   }
 
   start() {
@@ -42,7 +46,9 @@ class SVPoint {
 
   moveAtCenter(event) {
     this.toTurnOffUserSelect()
+    this.dividingOnSteps(event)
 
+    // Positions
     let centerOfEl: number = event.pageX - this.view.options.pointSize / 2
     let offsetLeftFIRST: number = this.view.$line.offsetLeft - this.view.options.pointSize / 2
     let offsetLeftSECOND: number = this.view.$line.offsetLeft - this.view.options.pointSize / 2 + this.view.$line.offsetWidth
@@ -52,7 +58,7 @@ class SVPoint {
     let isOutsideRight: boolean = centerOfEl > offsetLeftSECOND
 
     if (!isOutsideLeft && !isOutsideRight) {
-      this.view.$points[0].style.marginLeft = event.pageX - this.view.$line.offsetLeft - this.view.options.pointSize / 2 + 'px';
+      this.view.$points[0].style.marginLeft = this.newPosition - this.view.options.pointSize / 2 + 'px';
     } else if (isOutsideLeft) {
       this.view.$points[0].style.marginLeft = - this.view.options.pointSize / 2 + 'px';
     } else {
@@ -69,6 +75,24 @@ class SVPoint {
 
   toTurnOnUserSelect() {
     document.body.style.userSelect = 'auto'
+  }
+
+  dividingOnSteps(event) {
+    let countSteps: number = this.view.range / this.view.options.step
+    let sizeOfOneStep: number = this.view.$line.offsetWidth / Math.ceil(countSteps)
+    let currentPosition: number = event.pageX - this.view.$line.offsetLeft
+
+    if (Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep != this.newPosition) {
+      this.newPosition = Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep
+      
+      let isInner: boolean = (this.newPosition <= this.view.$line.offsetWidth) && (this.newPosition > 0)
+      
+      if (isInner) {
+        this.stepValue = Math.round(currentPosition / sizeOfOneStep) * this.view.options.step
+        console.log(this.newPosition, this.stepValue)
+      }
+      if ()
+    }
   }
 }
 
@@ -189,6 +213,8 @@ class SVLine {
 // ========== MAIN VIEW ==========
 class View {
   options: Options;
+  range: number;
+
   $el: HTMLElement;
   $points: NodeListOf<HTMLElement>;
   $range: HTMLElement;
@@ -203,6 +229,7 @@ class View {
 
   setOptions(options: Options) {
     this.options = options
+    this.range = options.max - options.min
   }
   
   render(template) {
