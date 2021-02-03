@@ -6,31 +6,16 @@ document.body.innerHTML = '<div id="ice-slider"></div>'
 
 const _model = new Model()
 const _view = new View()
-
+const options: Options = {
+  id: 'ice-slider',
+  pointSize: 16,
+  lineHeight: 6,
+  min: 0,
+  max: 150,
+  step: 15
+}
 
 describe('VIEW: ====================', () => {
-  const basicTemplate = `
-  <div class="ice-slider__text-wrapper">
-    <h3 class="ice-slider__title" data-type="is__title">Range slider</h3>
-    <span class="ice-slider__value" data-type="is__current-val">15000</span></div>
-  <div class="ice-slider__slider">
-    <div class="ice-slider__point"></div>
-    <div class="ice-slider__floating-value">
-      <span>100</span>
-    </div>
-    <div class="ice-slider__range"></div>
-    <div class="ice-slider__line"></div>
-  </div>
-  `
-  const options: Options = {
-    id: 'ice-slider',
-    pointSize: 16,
-    lineHeight: 6,
-    min: 0,
-    max: 150,
-    step: 15
-  }
-  
   describe('Setting up options', () => {
 
     test('setOptions should be defined', () => {
@@ -94,6 +79,29 @@ describe('VIEW: ====================', () => {
     })
     test('SVLine', () => {
       expect(_view.SVLine).toBeDefined()
+    })
+  })
+})
+
+
+describe('SVPoint: ====================', () => {
+  _view.setOptions(options)
+  _view.render(_model.template)
+  _view.initProps()
+  _view.initComponents()
+
+  const event = {
+    pageX: 130
+  }
+
+  Object.defineProperty(_view.$line, 'offsetWidth', {value: 150})
+  Object.defineProperty(_view.$line, 'offsetLeft', {value: 100})
+
+  describe('Dividing on steps', () => {
+    _view.SVPoint.dividingOnSteps(event)
+  
+    test('correctly step size', () => {
+      expect(_view.SVPoint.stepValue).toBe(30)
     })
   })
 })
