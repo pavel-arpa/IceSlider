@@ -65,8 +65,7 @@ class SVPoint {
       this.view.$points[0].style.marginLeft = this.view.$line.offsetWidth - this.view.options.pointSize / 2 + 'px';
     }
     
-    this.currentX = Number(this.view.$points[0].style.marginLeft.slice(0, -2)) + this.view.options.pointSize / 2
-    this.currentLineWidth = this.view.$line.offsetWidth
+    this.toSetCurrentValues()
   }
 
   toTurnOffUserSelect() {
@@ -96,6 +95,12 @@ class SVPoint {
       }
     }
   }
+
+  toSetCurrentValues() {
+    this.currentX = Number(this.view.$points[0].style.marginLeft.slice(0, -2)) + this.view.options.pointSize / 2
+    this.currentLineWidth = this.view.$line.offsetWidth
+  }
+
 }
 
 
