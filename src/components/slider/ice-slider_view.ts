@@ -48,6 +48,7 @@ class SVPoint {
     this.toTurnOffUserSelect()
     this.dividingOnSteps(event)
 
+
     // Positions
     let centerOfEl: number = event.pageX - this.view.options.pointSize / 2
     let offsetLeftFIRST: number = this.view.$line.offsetLeft - this.view.options.pointSize / 2
@@ -66,7 +67,7 @@ class SVPoint {
     }
     
     this.toSetCurrentValues()
-    this.toWriteInDOM()
+    this.view.SVText.toWriteInDOM()
   }
 
   toTurnOffUserSelect() {
@@ -85,11 +86,11 @@ class SVPoint {
     if (Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep != this.newPosition) {
       this.newPosition = Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep
       
-      let isInner: boolean = (this.newPosition <= this.view.$line.offsetWidth) && (this.newPosition > 0)
+      let isInner: boolean = ((this.newPosition - this.view.options.pointSize / 2) < this.view.$line.offsetWidth) && (this.newPosition > 0)
       
       if (isInner) {
-        this.stepValue = this.view.options.min + Math.round(currentPosition / sizeOfOneStep) * this.view.options.step
-      } else if (this.newPosition - this.view.options.pointSize / 2 > this.view.$line.offsetWidth) {
+        this.stepValue = this.view.options.min + (Math.round(currentPosition / sizeOfOneStep) * this.view.options.step)
+      } else if (this.newPosition - this.view.options.pointSize / 2 >= this.view.$line.offsetWidth) {
         this.stepValue = this.view.options.max
       } else if (this.newPosition - this.view.options.pointSize / 2  < 0) {
         this.stepValue = this.view.options.min
@@ -100,10 +101,6 @@ class SVPoint {
   toSetCurrentValues() {
     this.currentX = Number(this.view.$points[0].style.marginLeft.slice(0, -2)) + this.view.options.pointSize / 2
     this.currentLineWidth = this.view.$line.offsetWidth
-  }
-
-  toWriteInDOM() {
-    this.view.$value.textContent = String(this.stepValue)
   }
 }
 
@@ -218,6 +215,24 @@ class SVLine {
 
 
 
+class SVText {
+  view: View;
+
+  constructor(view) {
+    this.view = view
+  }
+
+  start() {
+    this.view.$value.textContent = String(this.view.options.min)
+  }
+
+  toWriteInDOM() {
+    this.view.$value.textContent = String(this.view.SVPoint.stepValue)
+  }
+}
+
+
+
 
 
 
@@ -237,6 +252,7 @@ class View {
   SVFloatingValue: SVFloatingValue;
   SVRange: SVRange;
   SVLine: SVLine;
+  SVText: SVText;
   // =============
 
   setOptions(options: Options) {
@@ -262,11 +278,13 @@ class View {
     this.SVFloatingValue = new SVFloatingValue(this)
     this.SVRange = new SVRange(this)
     this.SVLine = new SVLine(this)
+    this.SVText = new SVText(this)
 
     this.SVPoint.start()
     this.SVFloatingValue.start()
     this.SVRange.start()
     this.SVLine.start()
+    this.SVText.start()
   }
 }
 
