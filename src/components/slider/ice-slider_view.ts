@@ -66,6 +66,7 @@ class SVPoint {
     }
     
     this.toSetCurrentValues()
+    this.toWriteInDOM()
   }
 
   toTurnOffUserSelect() {
@@ -101,6 +102,9 @@ class SVPoint {
     this.currentLineWidth = this.view.$line.offsetWidth
   }
 
+  toWriteInDOM() {
+    this.view.$value.textContent = String(this.stepValue)
+  }
 }
 
 
@@ -227,6 +231,7 @@ class View {
   $range: HTMLElement;
   $line: HTMLElement;
   $floatingValue: HTMLElement;
+  $value: HTMLElement;
 
   SVPoint: SVPoint;
   SVFloatingValue: SVFloatingValue;
@@ -249,6 +254,7 @@ class View {
     this.$range = this.$el.querySelector('.ice-slider__range')
     this.$line = this.$el.querySelector('.ice-slider__line')
     this.$floatingValue = this.$el.querySelector('.ice-slider__floating-value')
+    this.$value = this.$el.querySelector('.ice-slider__value')
   }
 
   initComponents() {
