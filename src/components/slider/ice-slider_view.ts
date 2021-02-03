@@ -88,10 +88,12 @@ class SVPoint {
       let isInner: boolean = (this.newPosition <= this.view.$line.offsetWidth) && (this.newPosition > 0)
       
       if (isInner) {
-        this.stepValue = Math.round(currentPosition / sizeOfOneStep) * this.view.options.step
-        console.log(this.newPosition, this.stepValue)
+        this.stepValue = this.view.options.min + Math.round(currentPosition / sizeOfOneStep) * this.view.options.step
+      } else if (this.newPosition - this.view.options.pointSize / 2 > this.view.$line.offsetWidth) {
+        this.stepValue = this.view.options.max
+      } else if (this.newPosition - this.view.options.pointSize / 2  < 0) {
+        this.stepValue = this.view.options.min
       }
-      if ()
     }
   }
 }
@@ -126,7 +128,7 @@ class SVFloatingValue {
     this.view.$floatingValue.style.opacity = '1'
     this.view.$floatingValue.style.left = 'auto'
     this.view.$floatingValue.style.marginLeft = this.view.SVPoint.currentX - this.view.$floatingValue.offsetWidth / 2 + 'px'
-    this.view.$floatingValue.firstElementChild.textContent = String(this.view.SVPoint.currentX)
+    this.view.$floatingValue.firstElementChild.textContent = String(this.view.SVPoint.stepValue)
   }
 
   removeCurrentValueHandler() {

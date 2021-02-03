@@ -33,7 +33,7 @@ $('#ice-slider').iceSlider({
   id: 'ice-slider',
   pointSize: 16,
   lineHeight: 6,
-  min: 0,
+  min: 500,
   max: 5000,
   step: 50
 })
