@@ -82,6 +82,7 @@ class SVPoint {
     let countSteps: number = this.view.range / this.view.options.step
     let sizeOfOneStep: number = this.view.$line.offsetWidth / Math.ceil(countSteps)
     let currentPosition: number = event.pageX - this.view.$line.offsetLeft
+    
 
     if (Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep != this.newPosition) {
       this.newPosition = Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep
