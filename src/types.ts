@@ -6,3 +6,14 @@ interface Options extends Object {
   max: number;
   step: number;
 }
+
+interface ViewT extends Object {
+  [key: string]: any;
+
+  setOptions(options: Options): void;
+  render(template): void;
+  initComp(): void;
+  initProps(): void;
+  initSubViews(): void;
+  update(sender: object, event: string): void;
+}
