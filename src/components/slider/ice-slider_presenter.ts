@@ -13,8 +13,9 @@ class Presenter {
     let data = model.initData(options)
     view.setOptions(data)
     view.render(model.template)
+    view.initComp()
     view.initProps()
-    view.initComponents()
+    view.initSubViews()
   }
 }
 
