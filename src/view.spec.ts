@@ -15,7 +15,9 @@ const options: Options = {
   step: 15
 }
 
-describe('VIEW: ====================', () => {
+
+
+describe('===== VIEW: =====', () => {
   describe('Setting up options', () => {
 
     test('setOptions should be defined', () => {
@@ -41,7 +43,7 @@ describe('VIEW: ====================', () => {
 
   describe('Main HTMLElements initialization', () => {
     _view.setOptions(options)
-    _view.initProps()
+    _view.initComp()
 
     test('$el', () => {
       expect(_view.$el).toBeDefined()
@@ -65,8 +67,9 @@ describe('VIEW: ====================', () => {
   describe('Set up components', () => {
     _view.setOptions(options)
     _view.render(_model.template)
+    _view.initComp()
     _view.initProps()
-    _view.initComponents()
+    _view.initSubViews()
     
     test('SVPoint', () => {
       expect(_view.SVPoint).toBeDefined()
@@ -84,24 +87,66 @@ describe('VIEW: ====================', () => {
 })
 
 
-describe('SVPoint: ====================', () => {
-  _view.setOptions(options)
-  _view.render(_model.template)
-  _view.initProps()
-  _view.initComponents()
 
-  const event = {
-    pageX: 130
-  }
 
-  Object.defineProperty(_view.$line, 'offsetWidth', {value: 150})
-  Object.defineProperty(_view.$line, 'offsetLeft', {value: 100})
+
+// ==\= VALUES =/==
+const event = {
+  pageX: 130
+}
+
+Object.defineProperty(_view.$line, 'offsetWidth', {value: 150})
+Object.defineProperty(_view.$line, 'offsetLeft', {value: 100})
+_view.$points[0].style.marginLeft = '20px'
+let prop: number = 0.5
+
+
+
+
+describe('===== SVPoint: =====', () => {
 
   describe('Dividing on steps', () => {
     _view.SVPoint.dividingOnSteps(event)
   
     test('correctly step size', () => {
-      expect(_view.SVPoint.stepValue).toBe(30)
+      expect(_view.stepValue).toBe(30)
     })
   })
+
+  describe('Updating values', () => {
+    _view.SVPoint.toUpdateCurrentX()
+  
+    test('current X', () => {
+      expect(_view.currentX).toBe(28)
+    })
+  })
+})
+
+
+describe('===== SVLine: =====', () => {
+
+  describe('Updating values', () => {
+    test('current X', () => {
+      _view.SVLine.toUpdateCurrentX(prop)
+      expect(_view.currentX).toBe(75)
+    })
+    test('current Line Width', () => {
+      _view.SVLine.toUpdateLineWidth()
+      expect(_view.currentLineWidth).toBe(150)
+    })
+  })
+
+})
+
+
+
+describe('===== SVText: =====', () => {
+
+  describe('to write current step position', () => {
+    test('current X', () => {
+      _view.SVText.toWriteInDOM()
+      expect(Number(_view.$value.textContent)).toBe(30)
+    })
+  })
+
 })
