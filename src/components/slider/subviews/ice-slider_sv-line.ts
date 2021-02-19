@@ -25,12 +25,16 @@ class SVLine {
     let proportion: number = this.view.currentX / this.view.currentLineWidth
     this.view.$points[0].style.marginLeft = proportion * this.view.$line.offsetWidth - this.view.options.pointSize / 2 + 'px'
 
-    this.toUpdateView(proportion)
+    this.toUpdateCurrentX(proportion)
+    this.toUpdateLineWidth()
   }
 
-  toUpdateView(proportion) {
-    this.view.currentX = proportion * this.view.$line.offsetWidth
+  toUpdateLineWidth() {
     this.view.currentLineWidth = this.view.$line.offsetWidth
+  }
+  
+  toUpdateCurrentX(proportion) {
+    this.view.currentX = proportion * this.view.$line.offsetWidth
   }
 }
 

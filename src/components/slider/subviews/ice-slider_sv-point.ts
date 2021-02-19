@@ -59,8 +59,9 @@ class SVPoint {
       this.view.$points[0].style.marginLeft = this.view.$line.offsetWidth - this.view.options.pointSize / 2 + 'px';
     }
     
-    this.toUpdateView()
+    this.toUpdateCurrentX()
     this.view.update(SVPoint, 'rewriting text value')
+    this.view.update(SVPoint, 'update line width')
   }
 
   toTurnOffUserSelect() {
@@ -92,9 +93,8 @@ class SVPoint {
     }
   }
 
-  toUpdateView() {
+  toUpdateCurrentX() {
     this.view.currentX = Number(this.view.$points[0].style.marginLeft.slice(0, -2)) + this.view.options.pointSize / 2
-    this.view.currentLineWidth = this.view.$line.offsetWidth
   }
 }
 

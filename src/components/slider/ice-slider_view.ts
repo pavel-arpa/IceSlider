@@ -66,9 +66,13 @@ class View implements ViewT {
     this.SVText.start()
   }
 
+  // MEDIATOR PATTERN
   update(sender: object, event) {
     if(event == 'rewriting text value') {
       this.SVText.toWriteInDOM()
+    }
+    if(event == 'update line width') {
+      this.SVLine.toUpdateLineWidth()
     }
   }
 }
