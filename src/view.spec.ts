@@ -12,7 +12,8 @@ const options: Options = {
   lineHeight: 6,
   min: 0,
   max: 150,
-  step: 15
+  step: 15,
+  floatingValue: true
 }
 
 
@@ -106,7 +107,7 @@ let prop: number = 0.5
 describe('===== SVPoint: =====', () => {
 
   describe('Dividing on steps', () => {
-    _view.SVPoint.dividingOnSteps(event)
+    _view.SVPoint.dividingOnSteps(event.pageX)
   
     test('correctly step size', () => {
       expect(_view.stepValue).toBe(30)
