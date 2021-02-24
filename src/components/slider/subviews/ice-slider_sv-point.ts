@@ -7,10 +7,12 @@ class SVPoint {
     this.newPosition = 0
   }
 
+
   start() {
     this.setupOptions()
     this.toDragHorizon()
   }
+  
   
   setupOptions() {
     this.view.$points[0].style.width = this.view.options.pointSize + 'px'
@@ -18,32 +20,48 @@ class SVPoint {
     this.view.$points[0].style.marginLeft = - this.view.options.pointSize / 2 + 'px'
   }
 
+
   toDragHorizon() {
     this.moveItem = this.moveItem.bind(this)
     this.removeMoveItem = this.removeMoveItem.bind(this)
 
     this.view.$points[0].addEventListener('mousedown', this.moveItem)
     document.addEventListener('mouseup', this.removeMoveItem)
+    this.view.$points[0].addEventListener('touchstart', this.moveItem)
+    document.addEventListener('touchend', this.removeMoveItem)
   }
+
   
   moveItem(event) {
     this.moveAtCenter(event)
     this.moveAtCenter = this.moveAtCenter.bind(this)
     document.addEventListener('mousemove', this.moveAtCenter)
+    document.addEventListener('touchmove', this.moveAtCenter)
   }
+
   
   removeMoveItem(event) {
+    document.removeEventListener('touchmove', this.moveAtCenter)
     document.removeEventListener('mousemove', this.moveAtCenter)
     this.toTurnOnUserSelect()
   }
 
-  moveAtCenter(event) {
-    this.toTurnOffUserSelect()
-    this.dividingOnSteps(event)
 
+  moveAtCenter(event) {
+    let x: number
+    
+    if (event.type.slice(0, 5) === 'touch') {
+      event.preventDefault()
+      x = event.changedTouches[0].pageX
+    } else {
+      x = event.pageX
+    }
+    
+    this.toTurnOffUserSelect()
+    this.dividingOnSteps(x)
 
     // Positions
-    let centerOfEl: number = event.pageX - this.view.options.pointSize / 2
+    let centerOfEl: number = x - this.view.options.pointSize / 2
     let offsetLeftFIRST: number = this.view.$line.offsetLeft - this.view.options.pointSize / 2
     let offsetLeftSECOND: number = this.view.$line.offsetLeft - this.view.options.pointSize / 2 + this.view.$line.offsetWidth
 
@@ -64,20 +82,22 @@ class SVPoint {
     this.view.update(SVPoint, 'update line width')
   }
 
+
   toTurnOffUserSelect() {
     document.body.style.userSelect = 'none'
   }
+
 
   toTurnOnUserSelect() {
     document.body.style.userSelect = 'auto'
   }
 
-  dividingOnSteps(event) {
+
+  dividingOnSteps(x: number) {
     let countSteps: number = this.view.range / this.view.options.step
     let sizeOfOneStep: number = this.view.$line.offsetWidth / Math.ceil(countSteps)
-    let currentPosition: number = event.pageX - this.view.$line.offsetLeft
+    let currentPosition: number = x - this.view.$line.offsetLeft
     
-
     if (Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep != this.newPosition) {
       this.newPosition = Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep
       
@@ -92,6 +112,7 @@ class SVPoint {
       }
     }
   }
+
 
   toUpdateCurrentX() {
     this.view.currentX = Number(this.view.$points[0].style.marginLeft.slice(0, -2)) + this.view.options.pointSize / 2

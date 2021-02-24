@@ -1,3 +1,10 @@
+declare global {
+  interface Window {
+      view:any;
+  }
+}
+
+
 // IMPORTS
 import Model from './components/slider/ice-slider_model'
 import View from './components/slider/ice-slider_view'
@@ -16,10 +23,20 @@ importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
 
 // ASSIGMENTS
 (function($) {
+  let opt: Options = {
+    id: 'ice-slider',
+    pointSize: 16,
+    lineHeight: 6,
+    min: 700,
+    max: 4900,
+    step: 140,
+    floatingValue: true
+  }
   $.fn.extend({
     iceSlider: function(options: Options) {
       const model = new Model()
       const view = new View()
+      window.view = view;
       const presenter = new Presenter(view, model, options)
       console.log('--> The plugin was installed successfully');
       
@@ -33,7 +50,8 @@ $('#ice-slider').iceSlider({
   id: 'ice-slider',
   pointSize: 16,
   lineHeight: 6,
-  min: 500,
-  max: 5000,
-  step: 50
+  min: 700,
+  max: 4900,
+  step: 140,
+  floatingValue: true,
 })

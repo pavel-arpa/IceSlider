@@ -1,12 +1,9 @@
 @import "../../styles/fonts.scss";
 
-#ice-slider {
+.ice-slider {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-#ice-slider .ice-slider {
   &__text-wrapper {
     display: flex;
     flex-direction: row;
@@ -42,7 +39,6 @@
     position: absolute;
     left: -2000px;
     padding: 4px;
-    margin-bottom: 44px;
     border: 1px solid rgba(31, 32, 65, 0.25);
     border-radius: 4px;
     background-color: #fff;

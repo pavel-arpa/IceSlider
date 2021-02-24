@@ -1,10 +1,12 @@
 interface Options extends Object {
   id: string;
-  pointSize: number;
-  lineHeight: number;
+  pointSize?: number;
+  lineHeight?: number;
   min: number;
   max: number;
   step: number;
+  floatingValue?: boolean;
+  double?: boolean;
 }
 
 interface ViewT extends Object {

@@ -32,10 +32,12 @@ class View implements ViewT {
     this.options = options
     this.range = options.max - options.min
   }
+
   
   render(template) {
     document.getElementById(this.options.id).innerHTML = template
   }
+  
 
   initComp() {
     this.$el = document.getElementById(this.options.id)
@@ -46,25 +48,28 @@ class View implements ViewT {
     this.$value = this.$el.querySelector('.ice-slider__value')
   }
 
+
   initProps() {
     this.currentLineWidth = this.$line.offsetWidth
     this.currentX = 0
     this.stepValue = 0
   }
 
+
   initSubViews() {
     this.SVPoint = new SVPoint(this)
-    this.SVFloatingValue = new SVFloatingValue(this)
+    this.options.floatingValue === true ? this.SVFloatingValue = new SVFloatingValue(this) : true
     this.SVRange = new SVRange(this)
     this.SVLine = new SVLine(this)
     this.SVText = new SVText(this)
 
     this.SVPoint.start()
-    this.SVFloatingValue.start()
+    this.options.floatingValue === true ? this.SVFloatingValue.start() : true
     this.SVRange.start()
     this.SVLine.start()
     this.SVText.start()
   }
+
 
   // MEDIATOR PATTERN
   update(sender: object, event) {
