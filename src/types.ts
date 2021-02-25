@@ -7,6 +7,8 @@ interface Options extends Object {
   step: number;
   floatingValue?: boolean;
   double?: boolean;
+  vertical?: boolean;
+  length?: number;
 }
 
 interface ViewT extends Object {

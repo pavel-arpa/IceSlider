@@ -30,7 +30,8 @@ importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
     min: 700,
     max: 4900,
     step: 140,
-    floatingValue: true
+    floatingValue: true,
+    vertical: false,
   }
   $.fn.extend({
     iceSlider: function(options: Options) {
@@ -54,4 +55,16 @@ $('#ice-slider').iceSlider({
   max: 4900,
   step: 140,
   floatingValue: true,
+})
+
+$('#ice-slider-v').iceSlider({
+  id: 'ice-slider-v',
+  pointSize: 16,
+  lineHeight: 6,
+  min: 33,
+  max: 999,
+  step: 150,
+  floatingValue: true,
+  length: 100,
+  vertical: true,
 })

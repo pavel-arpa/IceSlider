@@ -118,7 +118,7 @@ describe('===== SVPoint: =====', () => {
     _view.SVPoint.toUpdateCurrentX()
   
     test('current X', () => {
-      expect(_view.currentX).toBe(28)
+      expect(_view.position).toBe(28)
     })
   })
 })
@@ -129,7 +129,7 @@ describe('===== SVLine: =====', () => {
   describe('Updating values', () => {
     test('current X', () => {
       _view.SVLine.toUpdateCurrentX(prop)
-      expect(_view.currentX).toBe(75)
+      expect(_view.position).toBe(75)
     })
     test('current Line Width', () => {
       _view.SVLine.toUpdateLineWidth()

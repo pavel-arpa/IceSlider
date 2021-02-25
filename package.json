@@ -4,7 +4,7 @@
   "description": "slider js",
   "main": "index.js",
   "scripts": {
-    "test": "jest --collect-coverage",
+    "test": "jest",
     "build": "webpack --mode production",
     "dev": "webpack --mode development",
     "start": "webpack serve --open"

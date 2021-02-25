@@ -2,8 +2,13 @@
 
 .ice-slider {
   display: flex;
-  flex-direction: column;
   width: 100%;
+  &_horizontal {
+    flex-direction: column;
+  }
+  &_vertical {
+    flex-direction: row;
+  }
   &__text-wrapper {
     display: flex;
     flex-direction: row;
@@ -21,8 +26,13 @@
 
   &__slider {
     display: flex;
-    align-items: center;
     margin-top: 20px;
+    &_horizontal {
+      align-items: center;
+    }
+    &_vertical {
+      // justify-content: center;
+    }
   }
   &__point {
     z-index: 30;

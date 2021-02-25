@@ -23,7 +23,7 @@ class View implements ViewT {
   SVLine: SVLine;
   SVText: SVText;
 
-  currentX: number;
+  position: number;
   currentLineWidth: number;
   stepValue: number;
   // =============
@@ -46,12 +46,24 @@ class View implements ViewT {
     this.$line = this.$el.querySelector('.ice-slider__line')
     this.$floatingValue = this.$el.querySelector('.ice-slider__floating-value')
     this.$value = this.$el.querySelector('.ice-slider__value')
+
+    if (this.options.vertical) {
+      this.$el.className = 'ice-slider ice-slider_vertical'
+      this.$el.querySelector('.ice-slider__slider').className = 'ice-slider__slider ice-slider__slider_vertical'
+    } else {
+      this.$el.className = 'ice-slider ice-slider_horizontal'
+      this.$el.querySelector('.ice-slider__slider').className = 'ice-slider__slider ice-slider__slider_horizontal'
+    }
   }
 
 
   initProps() {
-    this.currentLineWidth = this.$line.offsetWidth
-    this.currentX = 0
+    if(this.options.vertical) {
+      this.currentLineWidth = this.$line.offsetHeight
+    } else {
+      this.currentLineWidth = this.$line.offsetWidth
+    }
+    this.position = 0
     this.stepValue = 0
   }
 

@@ -6,7 +6,23 @@
   width: 100%;
 }
 
+.slider-types {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
 .slider-wrapper {
   display: flex;
-  width: 266px;
+  margin-bottom: 50px;
+  &_horizontal {
+    width: 100%;
+    max-width: 400px;
+  }
+  &_vertical {
+    // width: 100%;
+    max-width: 100px
+  }
 }

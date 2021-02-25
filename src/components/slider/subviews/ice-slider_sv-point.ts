@@ -1,6 +1,8 @@
 class SVPoint {
   view: ViewT;
   newPosition: number;
+  lineLength: number;
+  offset: number;
 
   constructor(view) {
     this.view = view
@@ -18,6 +20,9 @@ class SVPoint {
     this.view.$points[0].style.width = this.view.options.pointSize + 'px'
     this.view.$points[0].style.height = this.view.options.pointSize + 'px'
     this.view.$points[0].style.marginLeft = - this.view.options.pointSize / 2 + 'px'
+    // v
+    // this.view.$points[0].style.marginTop = - this.view.options.pointSize / 2 + 'px'
+
   }
 
 
@@ -48,33 +53,44 @@ class SVPoint {
 
 
   moveAtCenter(event) {
-    let x: number
+    let pos: number
     
     if (event.type.slice(0, 5) === 'touch') {
-      event.preventDefault()
-      x = event.changedTouches[0].pageX
+      if (this.view.options.vertical) {
+        pos = event.changedTouches[0].pageY
+      } else {
+        pos = event.changedTouches[0].pageX
+      }
     } else {
-      x = event.pageX
+      if (this.view.options.vertical) {
+        pos = event.pageY
+      } else {
+        pos = event.pageX
+      }
     }
     
+    this.toUpdateLineLength()
+    this.toUpdateOffset()
     this.toTurnOffUserSelect()
-    this.dividingOnSteps(x)
+    this.dividingOnSteps(pos)
 
     // Positions
-    let centerOfEl: number = x - this.view.options.pointSize / 2
-    let offsetLeftFIRST: number = this.view.$line.offsetLeft - this.view.options.pointSize / 2
-    let offsetLeftSECOND: number = this.view.$line.offsetLeft - this.view.options.pointSize / 2 + this.view.$line.offsetWidth
+    let centerOfEl: number = pos - this.view.options.pointSize / 2
+    let offsetFIRST: number = this.offset - this.view.options.pointSize / 2
+    let offsetSECOND: number = this.offset - this.view.options.pointSize / 2 + this.lineLength
+    // console.log(offsetFIRST, offsetSECOND);
+    
 
     // Checking, if the cursor is behind the slider on the right or left
-    let isOutsideLeft: boolean = centerOfEl < offsetLeftFIRST
-    let isOutsideRight: boolean = centerOfEl > offsetLeftSECOND
+    let isOutsideLeft: boolean = centerOfEl < offsetFIRST
+    let isOutsideRight: boolean = centerOfEl > offsetSECOND
 
     if (!isOutsideLeft && !isOutsideRight) {
-      this.view.$points[0].style.marginLeft = this.newPosition - this.view.options.pointSize / 2 + 'px';
+      this.toChangeMargin(this.newPosition - this.view.options.pointSize / 2)
     } else if (isOutsideLeft) {
-      this.view.$points[0].style.marginLeft = - this.view.options.pointSize / 2 + 'px';
+      this.toChangeMargin(- this.view.options.pointSize / 2)
     } else {
-      this.view.$points[0].style.marginLeft = this.view.$line.offsetWidth - this.view.options.pointSize / 2 + 'px';
+      this.toChangeMargin(this.lineLength - this.view.options.pointSize / 2)
     }
     
     this.toUpdateCurrentX()
@@ -93,19 +109,19 @@ class SVPoint {
   }
 
 
-  dividingOnSteps(x: number) {
+  dividingOnSteps(pos: number) {
     let countSteps: number = this.view.range / this.view.options.step
-    let sizeOfOneStep: number = this.view.$line.offsetWidth / Math.ceil(countSteps)
-    let currentPosition: number = x - this.view.$line.offsetLeft
+    let sizeOfOneStep: number = this.lineLength / Math.ceil(countSteps)
+    let currentPosition: number = pos - this.offset
     
     if (Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep != this.newPosition) {
       this.newPosition = Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep
       
-      let isInner: boolean = ((this.newPosition - this.view.options.pointSize / 2) < this.view.$line.offsetWidth) && (this.newPosition > 0)
+      let isInner: boolean = ((this.newPosition - this.view.options.pointSize / 2) < this.lineLength) && (this.newPosition > 0)
       
       if (isInner) {
         this.view.stepValue = this.view.options.min + (Math.round(currentPosition / sizeOfOneStep) * this.view.options.step)
-      } else if (this.newPosition - this.view.options.pointSize / 2 >= this.view.$line.offsetWidth) {
+      } else if (this.newPosition - this.view.options.pointSize / 2 >= this.lineLength) {
         this.view.stepValue = this.view.options.max
       } else if (this.newPosition - this.view.options.pointSize / 2  < 0) {
         this.view.stepValue = this.view.options.min
@@ -115,7 +131,42 @@ class SVPoint {
 
 
   toUpdateCurrentX() {
-    this.view.currentX = Number(this.view.$points[0].style.marginLeft.slice(0, -2)) + this.view.options.pointSize / 2
+    this.view.position = this.getMargin();
+  }
+
+
+  toUpdateLineLength() {
+    if (this.view.options.vertical) {
+      this.lineLength = this.view.$line.offsetHeight
+    } else {
+      this.lineLength = this.view.$line.offsetWidth
+    }
+  }
+
+
+  toUpdateOffset() {
+    if (this.view.options.vertical) {
+      this.offset = this.view.$line.offsetTop
+    } else {
+      this.offset = this.view.$line.offsetLeft
+    }
+  }
+
+
+  toChangeMargin(value: number) {
+    if (this.view.options.vertical) {
+      this.view.$points[0].style.marginTop = value + 'px'
+    } else {
+      this.view.$points[0].style.marginLeft = value + 'px'
+    }
+  }
+
+  getMargin() {
+    if (this.view.options.vertical) {
+      return this.view.$points[0].style.marginTop.slice(0, -2)
+    } else {
+      return this.view.$points[0].style.marginLeft.slice(0, -2)
+    }
   }
 }
 
