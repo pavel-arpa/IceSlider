@@ -22,6 +22,8 @@ importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
 
 
 // ASSIGMENTS
+window.view = [];
+
 (function($) {
   let opt: Options = {
     id: 'ice-slider',
@@ -37,7 +39,7 @@ importAll(require.context('../src/components', true, /\.ts$|\.scss$/));
     iceSlider: function(options: Options) {
       const model = new Model()
       const view = new View()
-      window.view = view;
+      window.view.push(view);
       const presenter = new Presenter(view, model, options)
       console.log('--> The plugin was installed successfully');
       
@@ -51,9 +53,9 @@ $('#ice-slider').iceSlider({
   id: 'ice-slider',
   pointSize: 16,
   lineHeight: 6,
-  min: 700,
-  max: 4900,
-  step: 140,
+  min: 0,
+  max: 990,
+  step: 33,
   floatingValue: true,
 })
 
@@ -61,10 +63,10 @@ $('#ice-slider-v').iceSlider({
   id: 'ice-slider-v',
   pointSize: 16,
   lineHeight: 6,
-  min: 33,
-  max: 999,
-  step: 150,
+  min: 0,
+  max: 990,
+  step: 33,
   floatingValue: true,
-  length: 100,
+  length: 200,
   vertical: true,
 })

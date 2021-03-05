@@ -113,14 +113,6 @@ describe('===== SVPoint: =====', () => {
       expect(_view.stepValue).toBe(30)
     })
   })
-
-  describe('Updating values', () => {
-    _view.SVPoint.toUpdateCurrentX()
-  
-    test('current X', () => {
-      expect(_view.position).toBe(28)
-    })
-  })
 })
 
 

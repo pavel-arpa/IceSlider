@@ -48,11 +48,13 @@ class View implements ViewT {
     this.$value = this.$el.querySelector('.ice-slider__value')
 
     if (this.options.vertical) {
-      this.$el.className = 'ice-slider ice-slider_vertical'
-      this.$el.querySelector('.ice-slider__slider').className = 'ice-slider__slider ice-slider__slider_vertical'
+      this.$el.classList.add('ice-slider_vertical')
+      this.$el.querySelector('.ice-slider__slider').classList.add('ice-slider__slider_vertical')
+      this.$el.querySelector('.ice-slider__text-wrapper').classList.add('ice-slider__text-wrapper_vertical')
     } else {
-      this.$el.className = 'ice-slider ice-slider_horizontal'
-      this.$el.querySelector('.ice-slider__slider').className = 'ice-slider__slider ice-slider__slider_horizontal'
+      this.$el.classList.add('ice-slider_horizontal')
+      this.$el.querySelector('.ice-slider__slider').classList.add('ice-slider__slider_horizontal')
+      this.$el.querySelector('.ice-slider__text-wrapper').classList.add('ice-slider__text-wrapper_horizontal')
     }
   }
 

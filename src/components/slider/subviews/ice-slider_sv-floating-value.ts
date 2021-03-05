@@ -8,7 +8,11 @@ class SVFloatingValue {
   
   start() {
     this.toFloat()
-    this.view.$floatingValue.style.marginBottom = this.view.options.pointSize + 30 + 'px'
+    if (this.view.options.vertical) {
+      this.view.$floatingValue.style.marginLeft = this.view.options.pointSize + 50 + 'px'
+    } else {
+      this.view.$floatingValue.style.marginBottom = this.view.options.pointSize + 30 + 'px'
+    }
   }
 
 
@@ -36,14 +40,16 @@ class SVFloatingValue {
   currentValueHandler() {
     this.view.$floatingValue.style.opacity = '1'
     this.view.$floatingValue.style.left = 'auto'
-    this.view.$floatingValue.style.marginLeft = this.view.position - this.view.$floatingValue.offsetWidth / 2 + 'px'
+    this.floatingValueOffset(this.view.position)
     this.view.$floatingValue.firstElementChild.textContent = String(this.view.stepValue)
   }
 
 
-  set floatingValueOffset(value) {
+  floatingValueOffset(value) {
     if (this.view.options.vertical) {
-      this.view.$floatingValue.style.marginTop = this.view.position - this.view.$floatingValue.offsetWidth / 2 + 'px'
+      this.view.$floatingValue.style.marginTop = value - this.view.$floatingValue.offsetWidth / 2 + 'px'
+    } else {
+      this.view.$floatingValue.style.marginLeft = value - this.view.$floatingValue.offsetWidth / 2 + 'px'
     }
   }
 

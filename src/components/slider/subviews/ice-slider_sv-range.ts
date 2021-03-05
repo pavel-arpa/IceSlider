@@ -5,10 +5,12 @@ class SVRange {
     this.view = view
   }
   
+  
   start() {
     this.setupOptions()
     this.rangeBG()
   }
+
 
   setupOptions() {
     if(this.view.options.vertical) {
@@ -18,6 +20,7 @@ class SVRange {
     }
     this.view.$range.style.borderRadius = this.view.options.pointSize + 'px'
   }
+
 
   rangeBG() {
     if(this.view.options.vertical) {

@@ -1,12 +1,12 @@
 class SVPoint {
   view: ViewT;
-  newPosition: number;
+  relativePos: number;
   lineLength: number;
   offset: number;
 
   constructor(view) {
     this.view = view
-    this.newPosition = 0
+    this.relativePos = 0
   }
 
 
@@ -19,10 +19,12 @@ class SVPoint {
   setupOptions() {
     this.view.$points[0].style.width = this.view.options.pointSize + 'px'
     this.view.$points[0].style.height = this.view.options.pointSize + 'px'
-    this.view.$points[0].style.marginLeft = - this.view.options.pointSize / 2 + 'px'
-    // v
-    // this.view.$points[0].style.marginTop = - this.view.options.pointSize / 2 + 'px'
-
+    
+    if (this.view.options.vertical) {
+      this.view.$points[0].style.marginTop = - this.view.options.pointSize / 2 + 'px'
+    } else {
+      this.view.$points[0].style.marginLeft = - this.view.options.pointSize / 2 + 'px'
+    }
   }
 
 
@@ -78,34 +80,21 @@ class SVPoint {
     let centerOfEl: number = pos - this.view.options.pointSize / 2
     let offsetFIRST: number = this.offset - this.view.options.pointSize / 2
     let offsetSECOND: number = this.offset - this.view.options.pointSize / 2 + this.lineLength
-    // console.log(offsetFIRST, offsetSECOND);
-    
 
     // Checking, if the cursor is behind the slider on the right or left
-    let isOutsideLeft: boolean = centerOfEl < offsetFIRST
-    let isOutsideRight: boolean = centerOfEl > offsetSECOND
+    let isOutsideMin: boolean = centerOfEl < offsetFIRST
+    let isOutsideMax: boolean = centerOfEl > offsetSECOND
 
-    if (!isOutsideLeft && !isOutsideRight) {
-      this.toChangeMargin(this.newPosition - this.view.options.pointSize / 2)
-    } else if (isOutsideLeft) {
+    if (!isOutsideMin && !isOutsideMax) {
+      this.toChangeMargin(this.relativePos - this.view.options.pointSize / 2)
+    } else if (isOutsideMin) {
       this.toChangeMargin(- this.view.options.pointSize / 2)
     } else {
       this.toChangeMargin(this.lineLength - this.view.options.pointSize / 2)
     }
     
-    this.toUpdateCurrentX()
     this.view.update(SVPoint, 'rewriting text value')
     this.view.update(SVPoint, 'update line width')
-  }
-
-
-  toTurnOffUserSelect() {
-    document.body.style.userSelect = 'none'
-  }
-
-
-  toTurnOnUserSelect() {
-    document.body.style.userSelect = 'auto'
   }
 
 
@@ -114,24 +103,23 @@ class SVPoint {
     let sizeOfOneStep: number = this.lineLength / Math.ceil(countSteps)
     let currentPosition: number = pos - this.offset
     
-    if (Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep != this.newPosition) {
-      this.newPosition = Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep
-      
-      let isInner: boolean = ((this.newPosition - this.view.options.pointSize / 2) < this.lineLength) && (this.newPosition > 0)
+    let isNewRelativePos: boolean = Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep != this.relativePos
+    this.relativePos = Math.round(currentPosition / sizeOfOneStep) * sizeOfOneStep
+    let isInner: boolean = ((this.relativePos) < this.lineLength) && (this.relativePos >= -0)
+    let isOutsideMax: boolean = this.relativePos >= this.lineLength
+    let isOutsideMin: boolean = this.relativePos <= 0
+
+    if (isNewRelativePos) {
+      console.log(this.relativePos);
       
       if (isInner) {
         this.view.stepValue = this.view.options.min + (Math.round(currentPosition / sizeOfOneStep) * this.view.options.step)
-      } else if (this.newPosition - this.view.options.pointSize / 2 >= this.lineLength) {
+      } else if (isOutsideMax) {
         this.view.stepValue = this.view.options.max
-      } else if (this.newPosition - this.view.options.pointSize / 2  < 0) {
+      } else if (isOutsideMin) {
         this.view.stepValue = this.view.options.min
       }
     }
-  }
-
-
-  toUpdateCurrentX() {
-    this.view.position = this.getMargin();
   }
 
 
@@ -159,14 +147,17 @@ class SVPoint {
     } else {
       this.view.$points[0].style.marginLeft = value + 'px'
     }
+    this.view.position = value + this.view.options.pointSize / 2
   }
 
-  getMargin() {
-    if (this.view.options.vertical) {
-      return this.view.$points[0].style.marginTop.slice(0, -2)
-    } else {
-      return this.view.$points[0].style.marginLeft.slice(0, -2)
-    }
+
+  toTurnOffUserSelect() {
+    document.body.style.userSelect = 'none'
+  }
+
+
+  toTurnOnUserSelect() {
+    document.body.style.userSelect = 'auto'
   }
 }
 
